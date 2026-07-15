@@ -62,12 +62,12 @@ Write-Log " M365 Group Membership Removal (In-Memory) | $RunMode"
 Write-Log "======================================================="
 
 Write-Log "Connecting to Microsoft Graph (interactive delegated auth)..."
-#Connect-MgGraph -Scopes @("User.Read.All","Group.Read.All","Group.ReadWrite.All","Directory.Read.All") -NoWelcome
+Connect-MgGraph -Scopes @("User.Read.All","Group.Read.All","Group.ReadWrite.All","Directory.Read.All") -NoWelcome
 Write-Log "Connected." "SUCCESS"
 
 if (-not (Test-Path $CsvPath)) {
     Write-Log "CSV not found: $CsvPath" "ERROR"
-    #Disconnect-MgGraph | Out-Null
+    Disconnect-MgGraph | Out-Null
     exit 1
 }
 
@@ -75,7 +75,7 @@ Write-Log "Reading CSV: $CsvPath"
 $TargetRows = @(Import-Csv -Path $CsvPath)
 if (-not ($TargetRows | Get-Member -Name 'UserEmail' -ErrorAction SilentlyContinue)) {
     Write-Log "CSV must contain a UserEmail column." "ERROR"
-    #Disconnect-MgGraph | Out-Null
+    Disconnect-MgGraph | Out-Null
     exit 1
 }
 
@@ -103,7 +103,7 @@ foreach ($row in $TargetRows) {
 
 if ($TargetUsersById.Count -eq 0) {
     Write-Log "No target users resolved. Exiting." "ERROR"
-    #Disconnect-MgGraph | Out-Null
+    Disconnect-MgGraph | Out-Null
     exit 1
 }
 
@@ -114,7 +114,7 @@ try {
 }
 catch {
     Write-Log "Service account not found or inaccessible: $ServiceAccountUpn" "ERROR"
-    #Disconnect-MgGraph | Out-Null
+    Disconnect-MgGraph | Out-Null
     exit 1
 }
 
@@ -220,7 +220,7 @@ if ($WhatIfPreference) {
     Write-Log "  PRE audit CSV        : $PreAuditCsv" "WARN"
     if ($UsersNotFound.Count -gt 0) { Write-Log "  UsersNotFound list   : $UsersNotFoundTxt" "WARN" }
     Write-Log "======================================" "WARN"
-    #Disconnect-MgGraph | Out-Null
+    Disconnect-MgGraph | Out-Null
     exit 0
 }
 
@@ -319,5 +319,5 @@ if ($UsersNotFound.Count -gt 0) { Write-Log "  UsersNotFound list    : $UsersNot
 Write-Log "  Run log               : $RunLogPath"
 Write-Log "======================================================="
 
-#Disconnect-MgGraph | Out-Null
+Disconnect-MgGraph | Out-Null
 Write-Log "Done." "SUCCESS"
