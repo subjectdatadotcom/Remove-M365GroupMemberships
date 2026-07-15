@@ -6,7 +6,7 @@ It covers Unified Microsoft 365 groups, including groups behind Teams and group-
 
 ## Script
 
-- Remove-M365GroupMemberships-InMemory.ps1
+- Remove-M365GroupMemberships.ps1
 
 ## What It Does
 
@@ -48,13 +48,13 @@ From this folder:
 ### Dry Run (WhatIf)
 
 ```powershell
-.\Remove-M365GroupMemberships-InMemory.ps1 -WhatIf
+.\Remove-M365GroupMemberships.ps1 -WhatIf
 ```
 
 ### Live Run
 
 ```powershell
-.\Remove-M365GroupMemberships-InMemory.ps1
+.\Remove-M365GroupMemberships.ps1
 ```
 
 ## Outputs
